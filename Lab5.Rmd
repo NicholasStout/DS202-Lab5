@@ -1,0 +1,37 @@
+---
+title: "Lab 5"
+author: "Nicholas Stout"
+date: "October 25, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+accident = read.csv("accident.csv")
+person = read.csv("person.csv")
+vehicle = read.csv("vehicle.csv")
+library(tidyverse)
+library(ggmap)
+library(maps)
+library(mapdata)
+```
+
+###Load the accident data, plot latitude and longitude on a map
+
+```{r}
+usa <- map_data("usa")
+ggplot() + 
+  geom_polygon(data = usa, aes(x=long, y = lat, group = group), fill = NA, color = "red")+ geom_point(data=accident, aes(x=LONGITUD, y=LATITUDE)) + xlim(-175,-30)+ylim(19,70)
+```
+
+##Part 2
+###Connect to the person table. Identify drivers (PER_TYP == 1, see fars manual ) and subset on them.
+###Join accident and driver table (work out which variable(s) to use)
+###Tally the number of accidents by day of the week (DAY_WEEK), hour of the day (HOUR) and gender (SEX). Visualize the results!
+```{r}
+drivers = person %>% filter(PER_TYP == 1)
+drivers %>% select(-c(HOUR)) %>% left_join(accident, by="ST_CASE") %>% group_by(DAY_WEEK) %>% summarise(count = n()) %>% ggplot(aes(x=DAY_WEEK)) + geom_bar()
+
+```
+
+Days 1, 6, and 7 are higher than the other days of the week.
