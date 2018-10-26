@@ -24,6 +24,24 @@ ggplot() +
   geom_polygon(data = usa, aes(x=long, y = lat, group = group), fill = NA, color = "red")+ geom_point(data=accident, aes(x=LONGITUD, y=LATITUDE)) + xlim(-175,-30)+ylim(19,70)
 ```
 
+###Part 1
+###are there some days of the week where more accidents happen than on others?
+###what time of the day do accidents happen?
+###what is the number of accidents with at least one drunk driver?
+
+```{r}
+library(ggplot2)
+ggplot(accident, aes(x = DAY_WEEK)) + geom_bar()
+ggplot(accident, aes(x = HOUR)) + geom_bar()
+ggplot(accident, aes(x = DRUNK_DR)) + geom_bar()
+```
+Yes, on days 1(Sunday), 6(Friday), and 7(Saturday), there appear to be more accidents than the rest of the week. Day 3(Tuesday) has the least amount of accidents. This makes sense, as most people are traveling longer distances and making more trips on the weekends, leading to more accidents.
+
+Accidnets appear to increase as the day goes on, starting around hour 10. There are a lot more accidents late at night and early in the morning than throughout the middle of the day. There seems to be an increase in accidents around hour 7. This is because at this time, there are a lot more drivers on the road, due to people traveling to work. There are over 250 accidents reported in hour 99. Seeing as how there are only 24 hours in a day, this appears to be a flaw in some of the data that was recorded.
+
+The number of accidents with at least one drunk driver is under one thousand, which is significantly less than accidents not involving a drunk driver. There are very few accidents with two drunk drivers involved.
+
+
 ##Part 2
 ###Connect to the person table. Identify drivers (PER_TYP == 1, see fars manual ) and subset on them.
 ###Join accident and driver table (work out which variable(s) to use)
