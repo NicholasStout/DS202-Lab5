@@ -1,6 +1,6 @@
 ---
 title: "Lab 5"
-author: "Nicholas Stout"
+author: "Nicholas Stout, Daniel Tacconi, Isaac Nellans"
 date: "October 25, 2018"
 output: html_document
 ---
@@ -48,8 +48,21 @@ The number of accidents with at least one drunk driver is under one thousand, wh
 ###Tally the number of accidents by day of the week (DAY_WEEK), hour of the day (HOUR) and gender (SEX). Visualize the results!
 ```{r}
 drivers = person %>% filter(PER_TYP == 1)
-drivers %>% select(-c(HOUR)) %>% left_join(accident, by="ST_CASE") %>% group_by(DAY_WEEK) %>% summarise(count = n()) %>% ggplot(aes(x=DAY_WEEK)) + geom_bar()
+drivers %>% select(-c(HOUR)) %>% left_join(accident, by="ST_CASE") %>% group_by(DAY_WEEK) %>% summarise(count = n()) %>% ggplot(aes(x=DAY_WEEK)) + geom_bar(aes(weight=count))
 
 ```
 
 Days 1, 6, and 7 are higher than the other days of the week.
+```{r}
+drivers %>% select(-c(HOUR)) %>% left_join(accident, by="ST_CASE") %>% group_by(HOUR) %>% summarise(count = n()) %>% ggplot(aes(x=HOUR)) + geom_bar(aes(weight=count))+xlim(0,24)
+```
+
+The accedent goes up after noon, and peaks around 5, which is usually rush hour.
+```{r}
+drivers$SEX = factor(drivers$SEX)
+drivers %>% select(-c(HOUR)) %>% left_join(accident, by="ST_CASE") %>% group_by(SEX) %>% summarise(count = n()) %>% ggplot(aes(x=SEX)) + geom_bar(aes(weight=count))
+```
+
+Men are in accidents three times more than women. Unknown or unreported gender is negligable.
+
+github link:https://github.com/NicholasStout/DS202-Lab5
